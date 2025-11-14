@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生选课管理系统 - 登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+            display: block;
+        }
+
+        .message.success {
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+            display: block;
+        }
+
+        .password-change-container {
+            display: none;
+        }
+
+        .password-change-container.show {
+            display: block;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>学生选课管理系统</h1>
+            <p>Student Course Management System</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <!-- 登录表单 -->
+        <div id="loginForm">
+            <form id="loginFormElement" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">学号</label>
+                    <input type="text" id="username" name="username" required placeholder="请输入学号">
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" required placeholder="请输入密码">
+                </div>
+                <button type="submit" class="btn" id="loginBtn">登录</button>
+            </form>
+        </div>
+
+        <!-- 修改密码表单 -->
+        <div id="passwordChangeForm" class="password-change-container">
+            <h2 style="margin-bottom: 20px; color: #333; text-align: center;">首次登录，请修改密码</h2>
+            <div style="text-align: center; margin-bottom: 20px; color: #666; font-size: 14px;">
+                当前学号：<span id="currentUsername" style="font-weight: bold; color: #333;"></span>
+            </div>
+            <form id="passwordChangeFormElement" onsubmit="handleChangePassword(event)">
+                <div class="form-group">
+                    <label for="oldPassword">当前密码</label>
+                    <input type="password" id="oldPassword" name="oldPassword" required placeholder="请输入当前密码">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">新密码</label>
+                    <input type="password" id="newPassword" name="newPassword" required placeholder="请输入新密码（数字+字母+特殊字符，大于7位）">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">确认新密码</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="请再次输入新密码">
+                </div>
+                <button type="submit" class="btn" id="changePasswordBtn">修改密码</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/api/login';
+
+        // 显示消息
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            setTimeout(() => {
+                messageDiv.className = 'message';
+            }, 5000);
+        }
+
+        // 处理登录
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = '登录中...';
+
+            try {
+                const response = await fetch(API_BASE_URL + '/student', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // 登录成功，检查是否需要修改密码
+                    if (result.firstLogin) {
+                        // 需要修改密码
+                        document.getElementById('loginForm').style.display = 'none';
+                        document.getElementById('passwordChangeForm').classList.add('show');
+                        document.getElementById('currentUsername').textContent = username; // 显示当前学号
+                        document.getElementById('oldPassword').value = password; // 自动填入当前密码
+                        showMessage('登录成功，请修改密码', 'success');
+                    } else {
+                        // 不需要修改密码，跳转到选课页面
+                        showMessage('登录成功，正在跳转...', 'success');
+                        // 保存登录信息到sessionStorage
+                        sessionStorage.setItem('username', username);
+                        sessionStorage.setItem('role', result.account.role);
+                        // 跳转到选课页面（后续实现）
+                        setTimeout(() => {
+                            window.location.href = '/course-selection.html';
+                        }, 1000);
+                    }
+                } else {
+                    showMessage(result.message || '登录失败', 'error');
+                }
+            } catch (error) {
+                showMessage('网络错误，请稍后重试', 'error');
+                console.error('Login error:', error);
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = '登录';
+            }
+        }
+
+        // 处理修改密码
+        async function handleChangePassword(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const changePasswordBtn = document.getElementById('changePasswordBtn');
+
+            // 验证两次密码是否一致
+            if (newPassword !== confirmPassword) {
+                showMessage('两次输入的密码不一致', 'error');
+                return;
+            }
+
+            changePasswordBtn.disabled = true;
+            changePasswordBtn.textContent = '修改中...';
+
+            try {
+                const response = await fetch(API_BASE_URL + '/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, oldPassword, newPassword })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showMessage('密码修改成功，正在跳转...', 'success');
+                    // 保存登录信息
+                    sessionStorage.setItem('username', username);
+                    // 跳转到选课页面（后续实现）
+                    setTimeout(() => {
+                        window.location.href = '/course-selection.html';
+                    }, 1500);
+                } else {
+                    showMessage(result.message || '密码修改失败', 'error');
+                }
+            } catch (error) {
+                showMessage('网络错误，请稍后重试', 'error');
+                console.error('Change password error:', error);
+            } finally {
+                changePasswordBtn.disabled = false;
+                changePasswordBtn.textContent = '修改密码';
+            }
+        }
+
+        // 页面加载时，检查URL参数中是否有学号（注册成功后跳转）
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentNumber = urlParams.get('studentNumber');
+            if (studentNumber) {
+                document.getElementById('username').value = studentNumber;
+                document.getElementById('password').value = '123456';
+                showMessage('注册成功，请使用学号和默认密码登录', 'success');
+            }
+        });
+    </script>
+</body>
+</html>
+
