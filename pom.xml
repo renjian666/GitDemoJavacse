@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>GitDemo_javacse</artifactId>
+    <artifactId>GitDemoJavacse</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>GitDemo_javacse</name>
     <description>GitDemo_javacse</description>
